@@ -1,0 +1,35 @@
+security:
+    #El encoders es necesario para saber como inscriptar la contraseña a la hora de almacenarla en la base de datos
+    encoders:
+        AppBundle\Entity\User:
+            algorithm: bcrypt
+    providers:
+        our_db_provider:
+            entity:
+                class: AppBundle:User
+                property: username
+
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        main:
+            pattern:    ^/
+            anonymous: ~
+            switch_user: true
+            provider: our_db_provider
+            # Le decimos a donde queremos ser redireccionados al acceder a una url privada, ej. /admin
+            # En la mayoria de los casos se redirecciona a la url de login
+            form_login:
+                login_path: login
+                check_path: login
+            logout:
+                path:   /logout
+                target: /
+
+        
+
+    access_control:
+        # require ROLE_ADMIN for /admin*
+        - { path: ^/admin, roles: ROLE_ADMIN }
