@@ -1,3 +1,4 @@
+#el framwork utiliza esta ruta para deslogear automaticamente al usuario
 logout:
     path: /logout
 app:

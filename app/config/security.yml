@@ -1,8 +1,10 @@
 security:
-    #El encoders es necesario para saber como inscriptar la contraseña a la hora de almacenarla en la base de datos
+    #El encoders es necesario para saber como encriptar la contraseña a la hora de almacenarla en la base de datos
     encoders:
         AppBundle\Entity\User:
             algorithm: bcrypt
+    #definimos de donde se van a obtener los usuario en el logeo, 
+    #en este caso desde una base de datos mapeada en AppBundle:User
     providers:
         our_db_provider:
             entity:
@@ -16,14 +18,18 @@ security:
 
         main:
             pattern:    ^/
+            #tanto anonymous como switch_user son necesario para que el logout funcione
             anonymous: ~
             switch_user: true
+            #el provider fue definido en la linea numero 8
             provider: our_db_provider
             # Le decimos a donde queremos ser redireccionados al acceder a una url privada, ej. /admin
             # En la mayoria de los casos se redirecciona a la url de login
             form_login:
                 login_path: login
                 check_path: login
+            # al linkear el path /logout el framework deslogea automaticamente al usuario
+            # es necesario agregar en routinh.yml la linea logout: path: /logout
             logout:
                 path:   /logout
                 target: /
